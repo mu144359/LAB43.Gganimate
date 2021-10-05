@@ -1,0 +1,79 @@
+---
+title: "gganimate MD"
+author: "Selene Muñoz MD"
+date: "5/10/2021"
+output: html_document
+---
+
+Cargar librería tidyverse
+```{r}
+library(tidyverse)
+```
+
+
+Instalar paqueterías para animar
+
+install.packages('gganimate')
+
+install.packages('gifski')
+
+
+Cargar librería gganimate y gifski
+```{r}
+library(gganimate)
+library(gifski)
+```
+
+Instalar la paquetería con los datos
+
+install.packages("gapminder")
+
+
+Cargar paquetería con los datos
+```{r}
+library(gapminder)
+```
+
+Cargar datos a entorno
+```{r}
+data("gapminder")
+```
+
+Ver datos
+```{r}
+head(gapminder)
+```
+
+1. gráfica básica
+```{r}
+g_animada<-gapminder %>% 
+  group_by(year, continent) %>% 
+  summarize (mean_life = mean(lifeExp)) %>% 
+  ggplot(aes (x=year,
+              y=mean_life,
+              color=continent))+
+  geom_line()
+g_animada
+```
+
+2. animando gráfica
+```{r}
+g_animada + transition_reveal(year)
+```
+
+3. mejorando animación
+```{r}
+gapminder %>% 
+  group_by(year, continent) %>% 
+  summarize (mean_life = mean(lifeExp)) %>% 
+  ggplot(aes (x = year,
+              y = mean_life,
+              color = continent)) +
+  geom_line(size = 2) +
+  geom_point(size = 4) +
+  labs (tittle = "Esperanza de Vida en {frame_along}" ,
+        x = "Fecha" ,
+        y = "Años de vida") +
+  theme_minimal () +
+  transition_reveal(year)
+```
